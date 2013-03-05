@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <link rel="stylesheet" style="text/css" href="bootstrap/css/bootstrap.css" />
+  </head>
+  <body>
+    <fieldset>
+      <legend>New Opinion</legend>
+      <form action="/opinions" method="POST">
+        <div class="row">
+          <div class="span2 offset1">
+            <input type="text" size="31" maxlength="30" name="title" placeholder="title (required)"></input>
+            <br/><br/>
+            <input type="text" name="author" placeholder="your name"></input>
+          </div>
+          <div class="span2 offset1">
+            <textarea name="description" placeholder="description (required)" rows="5" cols="70"></textarea>
+          </div>
+          <div class="span1 offset1">
+            <button type="submit" class="btn">Create</button>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+    <fieldset>
+      <legend>Opinions</legend>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <td>vote</td>
+            <td>title</td>
+            <td>description</td>
+            <td>author</td>
+            <td>created</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for opinion in opinions %}
+          <tr>
+            <td>{{ opinion.vote }}</td>
+            <td>{{ opinion.title }}</td>
+            <td>{{ opinion.description }}</td>
+            <td>{{ opinion.author }}</td>
+            <td>{{ opinion.created.strftime('%Y/%m/%d %H:%M:%S') }}</td>
+            <form action="/opinions" method="post">
+              <td><button type="submit" class="btn">Vote</button></td>
+              <input type="hidden" name="_t" value="v" />
+              <input type="hidden" name="_m" value="put" />
+              <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+            </form>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </fieldset>
+  </body>
+</html>
