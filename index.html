@@ -1,6 +1,7 @@
 <html>
   <head>
-    <link rel="stylesheet" style="text/css" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" media="screen" style="text/css" href="bootstrap/css/bootstrap.css" />
+    <script type="text/javascript" src="static_files/a.js"></script>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-static-top">
@@ -41,7 +42,9 @@
             <td>description</td>
             <td>author</td>
             <td>created</td>
-            <td></td>
+            <td>#</td>
+            <td>#</td>
+            <td>#</td>
           </tr>
         </thead>
         <tbody>
@@ -52,12 +55,30 @@
             <td>{{ opinion.description }}</td>
             <td>{{ opinion.author }}</td>
             <td>{{ opinion.created.strftime('%Y/%m/%d %H:%M:%S') }}</td>
-            <form action="/opinions" method="post">
-              <td><button type="submit" class="btn">Vote</button></td>
-              <input type="hidden" name="_t" value="v" />
-              <input type="hidden" name="_m" value="put" />
-              <input type="hidden" name="_k" value="{{ opinion.key() }}" />
-            </form>
+            <td>
+              <form action="/opinions" method="post">
+                <button type="submit" class="btn btn-primary">Vote</button>
+                <input type="hidden" name="_t" value="v" />
+                <input type="hidden" name="_m" value="put" />
+                <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+              </form>
+            </td>
+            <td>
+              <form action="/opinions" method="post" onSubmit="return check();">
+                <button type="submit" class="btn btn-success">Finish</button>
+                <input type="hidden" name="_t" value="f" />
+                <input type="hidden" name="_m" value="put" />
+                <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+              </form>
+            </td>
+            <td>
+              <form action="/opinions" method="post" onSubmit="return check();">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <input type="hidden" name="_t" value="d" />
+                <input type="hidden" name="_m" value="delete" />
+                <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

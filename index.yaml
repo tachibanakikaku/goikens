@@ -12,6 +12,14 @@ indexes:
 
 - kind: Opinion
   properties:
+  - name: archived
+  - name: vote
+    direction: desc
+  - name: created
+    direction: desc
+
+- kind: Opinion
+  properties:
   - name: vote
     direction: desc
   - name: created
