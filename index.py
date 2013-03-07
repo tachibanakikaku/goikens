@@ -44,7 +44,7 @@ class OpinionPage(webapp2.RequestHandler):
       o = Opinion(
         title=cgi.escape(self.request.get('title')),
         description=cgi.escape(self.request.get('description')),
-        author=cgi.escape(self.request.get('author'))
+        nickname=cgi.escape(self.request.get('nickname'))
         )
       o.put()
     memcache.delete('top')
