@@ -1,0 +1,4 @@
+cron:
+- description: update schema
+  url: /tasks?t=update_schema
+  schedule: every 24 hours

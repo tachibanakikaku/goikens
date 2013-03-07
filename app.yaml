@@ -11,6 +11,10 @@ handlers:
 - url: /static_files
   static_dir: static_files
 
+- url: /tasks
+  script: index.app
+  login: admin
+
 - url: /.*
   script: index.app
 

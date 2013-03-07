@@ -9,18 +9,16 @@ jinja2_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.d
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
-      c = memcache.get('top')
-      if c == None:
-#          q = Opinion.all()
-        opinions = Opinion.gql("WHERE archived = :1 ORDER BY vote DESC, created DESC", False)
-#        opinions = q.order('-vote').order('-created')
-        template_values = { 'opinions': opinions }
-        template = jinja2_environment.get_template('index.html')
-        t = template.render(template_values)
-        memcache.set('top', t, time=3600)
-        self.response.out.write(t)
-      else:
-        self.response.out.write(c)
+    c = memcache.get('top')
+    if c == None:
+      opinions = Opinion.gql("WHERE archived = :1 ORDER BY vote DESC, created DESC", False)
+      template_values = { 'opinions': opinions }
+      template = jinja2_environment.get_template('index.html')
+      t = template.render(template_values)
+      memcache.set('top', t, time=3600)
+      self.response.out.write(t)
+    else:
+      self.response.out.write(c)
 
 class OpinionPage(webapp2.RequestHandler):
   def _put(self):
@@ -52,6 +50,13 @@ class OpinionPage(webapp2.RequestHandler):
     memcache.delete('top')
     self.redirect('/')
 
-app = webapp2.WSGIApplication([('/', MainPage), ('/opinions', OpinionPage)],
+class TaskPage(webapp2.RequestHandler):
+  def get(self):
+    if (self.request.get('t') == 'update_schema'):
+      opinions = Opinion.all()
+      for o in opinions:
+        o.put()
+
+app = webapp2.WSGIApplication([('/', MainPage), ('/opinions', OpinionPage), ('/tasks', TaskPage)],
                               debug=True)
 
