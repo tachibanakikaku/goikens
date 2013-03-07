@@ -40,7 +40,7 @@
             <td>vote</td>
             <td>title</td>
             <td>description</td>
-            <td>author</td>
+            <td>nickname</td>
             <td>created</td>
             <td>#</td>
             <td>#</td>
@@ -53,7 +53,7 @@
             <td>{{ opinion.vote }}</td>
             <td>{{ opinion.title }}</td>
             <td>{{ opinion.description }}</td>
-            <td>{{ opinion.author }}</td>
+            <td>{{ opinion.nickname }}</td>
             <td>{{ opinion.created.strftime('%Y/%m/%d %H:%M:%S') }}</td>
             <td>
               <form action="/opinions" method="post">
