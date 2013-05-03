@@ -1,27 +1,16 @@
 <html>
-  <head>
-    <link rel="stylesheet" media="screen" style="text/css" href="bootstrap/css/bootstrap.css" />
-    <script type="text/javascript" src="static_files/a.js"></script>
-  </head>
+  {% include 'html/common/header.html' %}
   <body>
-    <div class="navbar navbar-inverse navbar-static-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">Goikens</a>
-          <ul class="nav">
-            <li class="active"><a target="_blank" href="https://github.com/tachibanakikaku/goikens">Source</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+
+    {% include 'html/common/navibar.html' %}
+
     <fieldset>
       <legend>New Opinion</legend>
       <form action="/opinions" method="POST">
+        <input type='hidden' value="{{ g.key() }}" name='g' />
         <div class="row">
           <div class="span2 offset1">
             <input type="text" size="31" maxlength="30" name="title" placeholder="title (required)"></input>
-            <br/><br/>
-            <input type="text" name="nickname" placeholder="your name"></input>
           </div>
           <div class="span2 offset1">
             <textarea name="description" placeholder="description (required)" rows="5" cols="70"></textarea>
@@ -33,7 +22,7 @@
       </form>
     </fieldset>
     <fieldset>
-      <legend>Opinions</legend>
+      <legend>{{ g.name }}'s opnions</legend>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -54,7 +43,7 @@
             <td>{{ opinion.title }}</td>
             <td>{{ opinion.description }}</td>
             <td>{{ opinion.nickname }}</td>
-            <td>{{ opinion.created.strftime('%Y/%m/%d %H:%M:%S') }}</td>
+            <td>{{ opinion.created_at.strftime('%Y/%m/%d %H:%M:%S') }}</td>
             <td>
               <form action="/opinions" method="post">
                 <button type="submit" class="btn btn-primary">Vote</button>
@@ -84,8 +73,7 @@
         </tbody>
       </table>
     </fieldset>
-    <p style="text-align:center;">
-      <span class="label">powered by tachibanakikaku.com</span>
-    </p>
+
+    {% include 'html/common/footer.html' %}
   </body>
 </html>

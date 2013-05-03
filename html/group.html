@@ -1,0 +1,41 @@
+<html>
+
+  {% include 'html/common/header.html' %}
+
+  <body>
+
+    {% include 'html/common/navibar.html' %}
+
+    <form class="form-inline" action='/groups' method='post'>
+      <input type="text" name='name' placeholder='e.g. Rocket Projects'>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+
+    <fieldset>
+      <legend>Groups</legend>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <td>name</td>
+            <td>owner</td>
+            <td>#</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for g in groups %}
+          <tr>
+            <td>{{ g.name }}</td>
+            <td>{{ g.owner }}</td>
+            <td>
+              <a href="/opinions?g={{ g.key() }}">see Opinions</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </fieldset>
+
+    {% include 'html/common/footer.html' %}
+
+  </body>
+</html>
