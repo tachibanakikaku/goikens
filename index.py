@@ -28,17 +28,31 @@ class MainPage(webapp2.RequestHandler):
       u_link = ('<a href=\"%s\">sign in</a>' % users.create_login_url('/'))
       self.response.out.write('<html><body>%s</body></html>' % u_link)
 
+
 class OpinionPage(webapp2.RequestHandler):
+
   def get(self):
-    g = Group.get(self.request.get('g'))
-    opinions = Opinion.gql("WHERE group = :1", g)
-    template_values = { 'opinions' : opinions, 'g' : g }
+
+    g_key = ''
+    g_name = ''
+
+    if self.request.get('g') == None or self.request.get('g') == '':
+      opinions = Opinion.all()
+    else:
+      g = Group.get(self.request.get('g'))
+      opinions = Opinion.gql('WHERE group = :1', g)
+      g_key = g.key()
+      g_name = g.name
+
+    template_values = { 'opinions' : opinions, 'g_key' : g_key, 'g_name' : g_name }
     template = jinja2_environment.get_template('html/opinion.html')
     t = template.render(template_values)
     self.response.out.write(t)
 
   def _put(self):
+
     o = Opinion.get(self.request.get('_k'))
+
     if self.request.get('_t') == 'v':
       o.vote += 1
       o.put()
@@ -47,12 +61,13 @@ class OpinionPage(webapp2.RequestHandler):
       o.put()
 
   def _delete(self):
+
     if self.request.get('_t') == 'd':
       o = Opinion.get(self.request.get('_k'))
       o.delete()
 
   def post(self):
-    print 'aaaaaaaa'
+
     if self.request.get('_m') == 'put':
       self._put()
     elif self.request.get('_m') == 'delete':
@@ -65,10 +80,13 @@ class OpinionPage(webapp2.RequestHandler):
         group = Key(self.request.get('g'))
         )
       o.put()
+
     memcache.delete('top')
-    self.redirect('/')
+    self.redirect('/opinions?g=%s' % self.request.get('g'))
+
 
 class GroupPage(webapp2.RequestHandler):
+
   def get(self):
     template = jinja2_environment.get_template('html/group.html')
     gs = Group.all()
@@ -77,15 +95,19 @@ class GroupPage(webapp2.RequestHandler):
     self.response.out.write(t)
     
   def post(self):
+
     g = Group(
       name=cgi.escape(self.request.get('name')),
       owner=users.get_current_user()
       )
     g.put()
     self.redirect('/groups')
+
     
 class TaskPage(webapp2.RequestHandler):
+
   def get(self):
+
     if (self.request.get('t') == 'update_schema'):
       opinions = Opinion.all()
       for o in opinions:

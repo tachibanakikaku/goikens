@@ -7,7 +7,7 @@
     <fieldset>
       <legend>New Opinion</legend>
       <form action="/opinions" method="POST">
-        <input type='hidden' value="{{ g.key() }}" name='g' />
+        <input type='hidden' value="{{ g_key }}" name='g' />
         <div class="row">
           <div class="span2 offset1">
             <input type="text" size="31" maxlength="30" name="title" placeholder="title (required)"></input>
@@ -22,7 +22,7 @@
       </form>
     </fieldset>
     <fieldset>
-      <legend>{{ g.name }}'s opnions</legend>
+      <legend>{{ g_name }}'s opnions</legend>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -31,9 +31,13 @@
             <td>description</td>
             <td>nickname</td>
             <td>created</td>
+            {% if g_key != '' %}
             <td>#</td>
             <td>#</td>
             <td>#</td>
+            {% else %}
+            aho
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -44,12 +48,14 @@
             <td>{{ opinion.description }}</td>
             <td>{{ opinion.nickname }}</td>
             <td>{{ opinion.created_at.strftime('%Y/%m/%d %H:%M:%S') }}</td>
+            {% if g_key != '' %}
             <td>
               <form action="/opinions" method="post">
                 <button type="submit" class="btn btn-primary">Vote</button>
                 <input type="hidden" name="_t" value="v" />
                 <input type="hidden" name="_m" value="put" />
                 <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+                <input type='hidden' value="{{ g_key }}" name='g' />
               </form>
             </td>
             <td>
@@ -58,6 +64,7 @@
                 <input type="hidden" name="_t" value="f" />
                 <input type="hidden" name="_m" value="put" />
                 <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+                <input type='hidden' value="{{ g_key }}" name='g' />
               </form>
             </td>
             <td>
@@ -66,8 +73,10 @@
                 <input type="hidden" name="_t" value="d" />
                 <input type="hidden" name="_m" value="delete" />
                 <input type="hidden" name="_k" value="{{ opinion.key() }}" />
+                <input type='hidden' value="{{ g_key }}" name='g' />
               </form>
             </td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
