@@ -1,5 +1,3 @@
-#!/usr/local/bin/python
-
 import optparse
 import sys
 import unittest2
