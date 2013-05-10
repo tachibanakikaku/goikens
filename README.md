@@ -1,6 +1,5 @@
-Title: Goikens
 Title: Goikens  
-License:  
+License: New BSD License  
 Author: yoshiokaas@gmai.com  
   
 ======
